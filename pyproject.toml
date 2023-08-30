@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "yt-dlp-metadata2nfo"
-version = "0.1.0"
+version = "0.3.1"
 description = "Generate NFO files (for emby / jellyfin / plex) as metadata files from yt-dlp's .info.json files."
 authors = ["unacro <git@ews.ink>"]
 license = "GNU General Public License v3.0"

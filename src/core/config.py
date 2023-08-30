@@ -2,15 +2,6 @@ import sys
 from dotenv import dotenv_values
 from loguru import logger
 
-logger.remove(0)  # remove current default config
-customized_config = {
-    "colorize": True,
-    "format": "<green>{time:YYYY-MM-D HH:mm:ss}</green> " +
-    "<level>{level: <8}</level> | {message}",
-    # "level": "INFO",
-}
-logger.add(sys.stderr, **customized_config)
-
 
 class Config(object):
 
@@ -20,3 +11,22 @@ class Config(object):
         if key in config:
             return config[key]
         return ""
+
+
+debug_mode: bool = Config.get("ENVIRONMENT") and Config.get(
+    "ENVIRONMENT").lower() in ["dev", "develop", "development"]
+default_format: str = (
+    "<green>{time:YYYY-MM-DD HH:mm:ss}</green> "
+    "[<level>{level}</level>] "
+    "<cyan><u>{name}</u></cyan> | "
+    # "<cyan>{function}:{line}</cyan>| "
+    "{message}"
+)
+
+logger.remove()  # remove current default config
+logger.add(
+    sys.stderr,
+    level="DEBUG" if debug_mode else "INFO",
+    diagnose=debug_mode,
+    format=default_format,
+)
